@@ -1,0 +1,21 @@
+{
+  "name": "jensen-backend",
+  "version": "1.0.0",
+  "description": "jensen-backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jensen",
+    "backend",
+    "app",
+    "server"
+  ],
+  "author": "N.E.S",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2"
+  }
+}
