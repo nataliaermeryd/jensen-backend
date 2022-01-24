@@ -1,12 +1,23 @@
 const credentials = {secretUser:"user" , secretPassword:"password"}
 
-const cors = require("cors")
-const express = require("express")
-const bodyParser = require('body-parser')
+const cors = require("cors");
+const express = require("express");
+
+const https = require("https");
+const http = require("http");
+
+const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
-const app = express()
+const app = express();
+const fs = require("fs");
+
 const PORT = process.env.PORT || 3000
+
+const options = {
+   key: fs.readFileSync('nattas-key.pem'),
+   cert: fs.readFileSync('nattas-cert.pem')
+}; 
 
 app.use(function (req, res, next) {
    res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'");
@@ -27,8 +38,7 @@ app.get("/", (req ,res)=>{
 app.get("/health", (req ,res)=>{
    headers={"http_status":200, "cache-control":  "no-cache"}
    body={"status": "available"}
-}) 
-
+})  
 
 app.post('/authorize', (req, res) => {
    // Insert Login Code Here
@@ -53,4 +63,11 @@ app.post('/authorize', (req, res) => {
 
 app.listen(PORT , ()=>{
      console.log(`STARTED LISTENING ON PORT ${PORT}`)
+});
+
+http.createServer(app).listen(8080, function(){
+   console.log('HTTP listening on 8080');
+});
+https.createServer(options, app).listen(443, function(){
+   console.log('HTTPS listening on 443');
 });
