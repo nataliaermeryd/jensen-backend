@@ -3,6 +3,9 @@ const credentials = {secretUser:"user" , secretPassword:"password"}
 const cors = require("cors");
 const express = require("express");
 
+const auditLog = require("audit-log");
+const mongoose = require("mongoose");
+
 const https = require("https");
 const http = require("http");
 
@@ -14,13 +17,23 @@ const fs = require("fs");
 
 const PORT = process.env.PORT || 3000
 
+auditLog.addTransport("mongoose", {connectionString: "mongodb://localhost:27017/myDatabase"});
+auditLog.addTransport("console");
+
+const User = new mongoose.model("User", userSchema);
+
+const userSchema = new mongoose.Schema({
+   email: String,
+   password: String
+});
+
 const options = {
    key: fs.readFileSync('nattas-key.pem'),
    cert: fs.readFileSync('nattas-cert.pem')
 }; 
 
 app.use(function (req, res, next) {
-   res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'");
+   //res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'");
    next();
 });
 
