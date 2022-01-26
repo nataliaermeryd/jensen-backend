@@ -20,12 +20,12 @@ const PORT = process.env.PORT || 3000
 auditLog.addTransport("mongoose", {connectionString: "mongodb://localhost:27017/myDatabase"});
 auditLog.addTransport("console");
 
-const User = new mongoose.model("User", userSchema);
-
 const userSchema = new mongoose.Schema({
    email: String,
    password: String
 });
+
+const User = new mongoose.model("User", userSchema);
 
 const options = {
    key: fs.readFileSync('nattas-key.pem'),
